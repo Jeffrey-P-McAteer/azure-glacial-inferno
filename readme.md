@@ -24,7 +24,10 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
  - user cert-ed WebDAV server for users to move files around
     - http://nginx.org/en/docs/http/ngx_http_dav_module.html
 
+## Background reading
 
+ - https://github.com/chenxiaolong/ipmi-fan-control
+ 
 
 
 
