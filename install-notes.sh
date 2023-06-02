@@ -3,9 +3,6 @@ exit 1 # Don't run this, it's a "script" for syntax highlighting
 
 iwctl station wlan0 connect "Network Name"
 
-ls /sys/firmware/efi/efivars
-# No EFI! aww...
-
 fdisk /dev/sda
 # GPT partition possible!
 # 2gb FAT boot
