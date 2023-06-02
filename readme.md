@@ -1,12 +1,12 @@
 
-# Azure-Glacier-Inferno
+# Azure-Glacial-Inferno
 
-Management utility for the `azure-glacier-inferno` server.
+Management utility for the `azure-glacial-inferno` server.
 
 Does not perform maitenence, but does warn/syslog about anomolies and re-starts anything out of line (disconnected network, drive mounts, whatever.).
 
 
-## Azure-Glacier-Inferno design
+## Azure-Glacial-Inferno design
 
  - Arch Linux
  - BTRFS root drive
