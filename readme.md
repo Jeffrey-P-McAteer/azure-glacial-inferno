@@ -11,6 +11,7 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
  - Arch Linux
  - BTRFS root drive
  - 32-or-so-GB swap
+ - SSH server
  - NginX w/ user certs
     - How dynamic can we make this? a `/agi-users/` folder of `.pem` files?
  - Xpra behind nginx
@@ -20,6 +21,8 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
     - User voice in/over, plus bg/shared music player (submit .mp3 files, YT urls, etc)
     - Can we enable audio out on login?
     - Also possibly some desktop GUI to render speaker icons?
+ - user cert-ed WebDAV server for users to move files around
+    - http://nginx.org/en/docs/http/ngx_http_dav_module.html
 
 
 
