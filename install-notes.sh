@@ -26,10 +26,11 @@ ipmitool sensor thresh FAN1 lower 300 300 400
 # Install!
 
 # Ensure EFI
-ls /sys/firmware/efi/efivars
+#ls /sys/firmware/efi/efivars
 
 fdisk /dev/sda
-# GPT partition possible!
+#### GPT partition possible!
+# Ended up using MBR/DOS disk + installing GRUB
 # 2gb FAT boot
 # remaining BTRFS root
 

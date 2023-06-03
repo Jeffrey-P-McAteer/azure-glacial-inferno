@@ -51,6 +51,12 @@ qemu-system-x86_64 -bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd -drive format=raw
 # chroot to a foreign installed system
 sudo mount /dev/sdd2 /tmp/agi && sudo mount /dev/sdd1 /tmp/agi/boot && sudo arch-chroot /tmp/agi ; sudo umount /tmp/agi/boot ; sudo umount /tmp/agi
 
+# More dumb live iso crap
+mount /run/archiso/cowspace -o remount,size=999G
+mount / -o remount,size=999G
+mount /tmp -o remount,size=999G
+
+
 ```
 
 
