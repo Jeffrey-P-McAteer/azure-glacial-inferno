@@ -68,6 +68,23 @@ passwd
 bootctl install
 systemctl enable systemd-boot-update.service
 
+cat > /boot/loader/loader.conf <<EOF
+#console-mode keep
+console-mode max
+timeout 6
+default arch.conf
+EOF
+
+cat > /boot/loader/entries/arch.conf <<EOF
+title Azure Glacial Inferno
+linux /vmlinuz-linux
+initrd /intel-ucode.img
+initrd /initramfs-linux.img
+options root=PARTUUID=TODO-run-blkid rootfstype=btrfs add_efi_memmap mitigations=off pti=off intel_pstate=passive
+EOF
+
+
+
 # Misc packages
 pacman -Sy zsh vim sudo python iwd
 systemctl enable iwd.service
@@ -75,6 +92,67 @@ systemctl enable iwd.service
 
 # Create a 'jeffrey' account
 useradd -m -G wheel,video,disk -s /usr/bin/zsh jeffrey
+
+# Install yay
+(
+  su jeffrey
+  cd /opt
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
+  makepkg -si
+)
+
+# Now install more packages! (some from AUR now)
+yay -Sy nvidia cuda opencl-nvidia
+yay -Sy ocl-icd
+yay -Sy intel-ucode
+
+yay -Sy openssh nginx-mainline
+sudo systemctl enable sshd.service
+sudo systemctl enable nginx.service
+
+# xpra GUI stuff, select pipewire + wireplumber for audio stuff
+yay -Sy xorg lxqt breeze-icons xpra
+
+
+yay -Sy oh-my-zsh-git
+
+yay -S freeipmi pkgconf clang cargo
+# ^ picked rustup for rust provider
+# for https://github.com/chenxiaolong/ipmi-fan-control
+(
+  cd /opt
+  git clone https://github.com/chenxiaolong/ipmi-fan-control
+  cd ipmi-fan-control
+  cargo build --release
+  
+  # see https://github.com/chenxiaolong/ipmi-fan-control/blob/master/config.sample.toml
+  vim /etc/ipmi-fan-control.toml
+
+  /opt/ipmi-fan-control/target/release/ipmi-fan-control 
+
+  sudo vim /etc/systemd/system/ipmi-fan-control.service <<EOF
+[Unit]
+Description=Run ipmi-fan-control service
+
+[Service]
+ExecStart=/opt/ipmi-fan-control/target/release/ipmi-fan-control 
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  sudo systemctl enable ipmi-fan-control.service
+
+)
+
+yay -S lm_sensors
+sudo sensors-detect
+
+# More firmware blobs!
+yay -S mkinitcpio-firmware
+
+
+
 
 
 
