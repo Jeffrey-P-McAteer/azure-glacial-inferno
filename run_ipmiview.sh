@@ -11,7 +11,7 @@ if ! ( ip address | grep -q 169.254.10.10 ) ; then
 fi
 
 # https://www.supermicro.com/manuals/other/ipmiview20.pdf
-export _JAVA_OPTIONS=-Djdk.gtk.version=2
+# export _JAVA_OPTIONS=-Djdk.gtk.version=2
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 exec ipmiview 169.254.100.1
