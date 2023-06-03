@@ -24,6 +24,18 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
  - user cert-ed WebDAV server for users to move files around
     - http://nginx.org/en/docs/http/ngx_http_dav_module.html
 
+## Non-standard directories
+
+ - `/docs/*`
+    - Folder with markdown write-ups of how to do common operations + research notes.
+ - `/azure-glacial-inferno`
+    - This repository! Will have systemd service pointing to run `/azure-glacial-inferno/target/release/azure-glacial-inferno` as primary management watchdog.
+ - `/users/<username>.toml`
+    - Read by `azure-glacial-inferno` the rust tool, contains user-specific config such as profile pic (for mumble automata), ssh public key, and nginx user cert pub key.
+    - Polled + information is distributed to the various subsystems that use it every `90s`.
+
+
+
 ## Background reading
 
  - https://github.com/chenxiaolong/ipmi-fan-control
