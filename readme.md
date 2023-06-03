@@ -46,7 +46,8 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
 
 ```bash
 # Display hdmi from capture card
-mpv --profile=low-latency --untimed /dev/video4
+#mpv --profile=low-latency --untimed /dev/video4
+mpv --profile=low-latency --untimed  --no-cache --no-demuxer-thread --video-sync=audio --vd-lavc-threads=1 --osc=no /dev/video4
 
 # boot an installed system
 qemu-system-x86_64 -bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd -drive format=raw,file=/dev/sdd -m 4G -enable-kvm
