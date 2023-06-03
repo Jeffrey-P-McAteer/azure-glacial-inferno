@@ -42,7 +42,16 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
 
  - https://github.com/chenxiaolong/ipmi-fan-control
  
+## Debugging notes
 
+```bash
+# boot an installed system
+qemu-system-x86_64 -bios /usr/share/edk2-ovmf/x64/OVMF_CODE.fd -drive format=raw,file=/dev/sdd -m 4G -enable-kvm
+
+# chroot to a foreign installed system
+sudo mount /dev/sdd2 /tmp/agi && sudo mount /dev/sdd1 /tmp/agi/boot && sudo arch-chroot /tmp/agi ; sudo umount /tmp/agi/boot ; sudo umount /tmp/agi
+
+```
 
 
 
