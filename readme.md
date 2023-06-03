@@ -33,7 +33,9 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
  - `/users/<username>.toml`
     - Read by `azure-glacial-inferno` the rust tool, contains user-specific config such as profile pic (for mumble automata), ssh public key, and nginx user cert pub key.
     - Polled + information is distributed to the various subsystems that use it every `90s`.
-
+ - `/mnt/*`
+    - Internal disks from the JBOD not-a-raid controller. Shoud meet size + speed needs, eg one is `240gb` ssd, other is `2tb` hdd.
+    - Names to follow.
 
 
 ## Background reading
