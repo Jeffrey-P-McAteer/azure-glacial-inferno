@@ -17,6 +17,13 @@ ipmitool user list 1
 ipmitool user set password 2
 ipmitool user enable 2
 
+# We're going to share LAN1 w/ the host for IPMI stuff.
+ipmitool raw 0x30 0x70 0x0c 1 1
+# Static IPs for this network (169.254.0.0/16 ):
+#  - laptop will be 169.254.10.10
+#  - IPMI BMC is 169.254.100.1
+#  - Host is 169.254.100.2
+
 ipmitool chassis bootdev bios # to force a boot to bios on `reboot`
 
 ipmitool sensor
