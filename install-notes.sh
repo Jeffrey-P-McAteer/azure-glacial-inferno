@@ -109,8 +109,9 @@ EOF
 
 
 # Misc packages
-pacman -Sy zsh vim sudo python iwd
+pacman -Sy zsh vim sudo python iwd dhcpcd
 systemctl enable iwd.service
+systemctl enable dhcpcd.service
 
 
 # Create a 'jeffrey' account
