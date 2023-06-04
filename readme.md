@@ -36,6 +36,8 @@ Does not perform maitenence, but does warn/syslog about anomolies and re-starts 
  - `/mnt/*`
     - Internal disks from the JBOD not-a-raid controller. Shoud meet size + speed needs, eg one is `240gb` ssd, other is `2tb` hdd.
     - Names to follow.
+ - `/projects/*`
+    - External / shared projects, should be world-read+write-able.
 
 
 ## Background reading
