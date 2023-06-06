@@ -177,7 +177,18 @@ yay -S mkinitcpio-firmware
 
 
 
+cat > /etc/systemd/network/eno1.network <<EOF
+[Match]
+Name=eno1
 
+[Network]
+Address=169.254.100.2/16
+#Gateway=169.254.100.1
+#DNS=192.168.1.1
+EOF
+
+# GPU drivers for the old cards!
+yay -S nvidia-470xx-dkms
 
 
 
