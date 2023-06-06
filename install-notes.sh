@@ -188,7 +188,8 @@ Address=169.254.100.2/16
 EOF
 
 # GPU drivers for the old cards!
-yay -S nvidia-470xx-dkms
+yay -R nvidia
+yay -S linux-headers nvidia-470xx-dkms cuda
 
 
 
