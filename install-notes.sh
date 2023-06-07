@@ -192,6 +192,10 @@ yay -R nvidia
 yay -S linux-headers nvidia-470xx-dkms cuda
 
 
+# Instead of building torch ourselves, let's see if we can borrow this one:
+# https://blog.nelsonliu.me/2020/10/13/newer-pytorch-binaries-for-older-gpus/
+python3.10 -m pip install --user --upgrade --force-reinstall torch -f https://nelsonliu.me/files/pytorch/whl/torch_stable.html
+
 
 
 
