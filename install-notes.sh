@@ -197,6 +197,9 @@ yay -S linux-headers nvidia-470xx-dkms cuda
 python3.10 -m pip install --user --upgrade --force-reinstall torch -f https://nelsonliu.me/files/pytorch/whl/torch_stable.html
 
 
+# Also web-hosting beginnings
+yay -S certbot certbot-nginx
+
 
 
 
