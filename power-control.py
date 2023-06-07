@@ -6,6 +6,8 @@ import subprocess
 import time
 import asyncio
 import traceback
+import shutil
+
 
 try:
   import kasa
@@ -15,6 +17,21 @@ except:
     sys.executable, '-m', 'pip', 'install', '--user', 'python-kasa'
   ])
   import kasa
+
+
+try:
+  import pyipmi
+except:
+  traceback.print_exc()
+  subprocess.run([
+    sys.executable, '-m', 'pip', 'install', '--user', 'python-ipmi'
+  ])
+  import pyipmi
+
+
+from kasa import SmartStrip
+import pyipmi
+import pyipmi.interfaces
 
 
 def ip_from_mac(mac_addr):
@@ -76,13 +93,28 @@ def ip_from_mac(mac_addr):
 
   return ip_neigh_ip_addr
 
+def establish_pyipmi_sess(ipmi_bmc_ip):
+  try:
+    interface = pyipmi.interfaces.create_interface(interface='rmcp',
+                                         slave_address=0x81,
+                                         host_target_address=0x20,
+                                         keep_alive_interval=1)
+    ipmi = pyipmi.create_connection(interface)
+    ipmi.session.set_session_type_rmcp(host=ipmi_bmc_ip, port=623)
+    ipmi.session.set_auth_type_user(username='ADMIN', password=os.environ['IPMI_PASSWORD'])
 
+    ipmi.target = pyipmi.Target(ipmb_address=0x20)
 
+    ipmi.session.establish()
+
+    return ipmi
+  except:
+    traceback.print_exc()
+    return None
 
 async def main():
-  from kasa import SmartStrip
-
   kasa_powerstrip_mac_addr = '48:22:54:30:05:78'
+  ipmi_bmc_ip = '169.254.100.1'
 
   print(f'{kasa_powerstrip_mac_addr} is at {ip_from_mac(kasa_powerstrip_mac_addr)}')
 
@@ -94,16 +126,85 @@ async def main():
     print(f"{plug.alias}: {plug.is_on}")
 
   if 'off' in sys.argv:
-    print('Turning server ports off...')
+
+    if 'IPMI_PASSWORD' in os.environ:
+      print(f'Asking BMC to power down nicely...')
+      try:
+        ipmi = establish_pyipmi_sess(ipmi_bmc_ip)
+        ipmi.chassis_control_soft_shutdown()
+      except:
+        traceback.print_exc()
+      
+      # Poll for 40s for power down...
+      for _ in range(0, 10):
+        time.sleep(4)
+        try:
+          ipmi = establish_pyipmi_sess(ipmi_bmc_ip)
+          if ipmi is None:
+            continue
+
+          print(f'ipmi.get_device_id() = {ipmi.get_device_id()}')
+
+          # Is it powered off?
+          chassis_status = ipmi.get_chassis_status()
+          print(f'chassis_status.power_on = {chassis_status.power_on}')
+
+          if not chassis_status.power_on:
+            break # continue!
+
+        except:
+          traceback.print_exc()
+
+      print(f'Telling BMC to power down...')
+      try:
+        ipmi = establish_pyipmi_sess(ipmi_bmc_ip)
+        ipmi.chassis_control_power_down()
+      except:
+        traceback.print_exc()
+      
+      time.sleep(2)
+
+    else:
+      print(f'WARNING: cannot ask BMC over IPMI to power off nicely because the environment variable IPMI_PASSWORD is not defined.')
+      time.sleep(0.5)
+    
+    print('Turning server power sockets off...')
     for plug in p.children:
       if 'AGI' in plug.alias:
         await plug.turn_off()
 
   elif 'on' in sys.argv:
-    print('Turning server ports on...')
+
+    print('Turning server power sockets on...')
     for plug in p.children:
       if 'AGI' in plug.alias:
         await plug.turn_on()
+
+    if 'IPMI_PASSWORD' in os.environ:
+      # Ask ipmi_bmc_ip if it's on...
+      while True:
+        print(f'Polling for BMC at {ipmi_bmc_ip}')
+        time.sleep(1)
+        try:
+          ipmi = establish_pyipmi_sess(ipmi_bmc_ip)
+          if ipmi is None:
+            continue
+
+          print(f'ipmi.get_device_id() = {ipmi.get_device_id()}')
+
+          # Is it powered on?
+          chassis_status = ipmi.get_chassis_status()
+          print(f'chassis_status.power_on = {chassis_status.power_on}')
+
+          ipmi.chassis_control_power_up()
+          
+          break
+
+        except:
+          traceback.print_exc()
+    else:
+      print(f'WARNING: not booting using IPMI because the environment variable IPMI_PASSWORD is not defined.')
+      time.sleep(0.5)
 
 
 
