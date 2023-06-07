@@ -4,6 +4,17 @@ import os
 import sys
 import subprocess
 import time
+import asyncio
+import traceback
+
+try:
+  import kasa
+except:
+  traceback.print_exc()
+  subprocess.run([
+    sys.executable, '-m', 'pip', 'install', '--user', 'python-kasa'
+  ])
+  import kasa
 
 
 def ip_from_mac(mac_addr):
@@ -68,12 +79,35 @@ def ip_from_mac(mac_addr):
 
 
 
-kasa_powerstrip_mac_addr = '48:22:54:30:05:78'
+async def main():
+  from kasa import SmartStrip
+
+  kasa_powerstrip_mac_addr = '48:22:54:30:05:78'
+
+  print(f'{kasa_powerstrip_mac_addr} is at {ip_from_mac(kasa_powerstrip_mac_addr)}')
+
+  p = SmartStrip(ip_from_mac(kasa_powerstrip_mac_addr))
+
+  await p.update()
+
+  for plug in p.children:
+    print(f"{plug.alias}: {plug.is_on}")
+
+  if 'off' in sys.argv:
+    print('Turning server ports off...')
+    for plug in p.children:
+      if 'AGI' in plug.alias:
+        await plug.turn_off()
+
+  elif 'on' in sys.argv:
+    print('Turning server ports on...')
+    for plug in p.children:
+      if 'AGI' in plug.alias:
+        await plug.turn_on()
 
 
-print(f'{kasa_powerstrip_mac_addr} is at {ip_from_mac(kasa_powerstrip_mac_addr)}')
 
 
-
-
+if __name__ == "__main__":
+  asyncio.run(main())
 
