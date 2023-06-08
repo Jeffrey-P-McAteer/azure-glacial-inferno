@@ -202,5 +202,20 @@ yay -S certbot certbot-nginx
 
 
 
+yay -S powertop
+sudo vim /etc/systemd/system/powertop.service <<EOF
+Description=Powertop tunings
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/powertop --auto-tune
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+
 
 
