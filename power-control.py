@@ -171,6 +171,8 @@ async def main():
     print('Turning server power sockets off...')
     for plug in p.children:
       if 'AGI' in plug.alias:
+        if 'AGI-lan' in plug.alias:
+          continue # Don't turn LAN off
         await plug.turn_off()
 
   elif 'on' in sys.argv:
