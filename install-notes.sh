@@ -214,6 +214,11 @@ ExecStart=/usr/bin/powertop --auto-tune
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo systemctl enable --now powertop.service
+
+yay -S smfc
+sudo systemctl enable --now smfc.service
+sudo vim /opt/smfc/smfc.conf
 
 
 
