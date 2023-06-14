@@ -221,6 +221,14 @@ sudo systemctl enable --now smfc.service
 sudo vim /opt/smfc/smfc.conf
 
 
+yay -S tailscale
+sudo systemctl enable --now tailscaled.service
+
+
+# Back to AI land
+yay -S llama.cpp-git
+
+
 
 
 
