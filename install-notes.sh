@@ -226,14 +226,21 @@ sudo systemctl enable --now tailscaled.service
 
 
 # Back to AI land
-yay -S llama.cpp-git
-yay -S git-lfs
-git lfs install
-mkdir /projects/llama-playground
-git clone https://huggingface.co/Pi3141/alpaca-native-7B-ggml /projects/llama-playground/alpaca-native-7B-ggml
+(
+  yay -S llama.cpp-git
+  yay -S git-lfs
+  git lfs install
+  mkdir /projects/llama-playground
+  git clone https://huggingface.co/Pi3141/alpaca-native-7B-ggml /projects/llama-playground/alpaca-native-7B-ggml
 
-llama.cpp --model ./alpaca-native-7B-ggml/ --prompt 'blah blah write me a story'
+  llama.cpp --model ./alpaca-native-7B-ggml/ --prompt 'blah blah write me a story'
+)
 
+yay -S supermicro-update-manager
+# https://major.io/2022/04/07/update-supermicro-bios-firmware-from-linux/
+
+
+sudo dmidecode --type 17 # ram speeds
 
 
 
