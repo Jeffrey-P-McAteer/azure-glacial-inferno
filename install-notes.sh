@@ -117,6 +117,10 @@ systemctl enable dhcpcd.service
 # Create a 'jeffrey' account
 useradd -m -G wheel,video,disk -s /usr/bin/zsh jeffrey
 
+# Create a 'guest' account (pw: guest)
+useradd -m -G video -s /usr/bin/bash guest
+
+
 # Install yay
 (
   su jeffrey
