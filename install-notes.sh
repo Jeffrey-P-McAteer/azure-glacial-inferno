@@ -251,5 +251,8 @@ yay -S supermicro-update-manager
 
 sudo dmidecode --type 17 # ram speeds
 
+# SOMEHOW I FORGOT TO INSTALL MY OWN FILESYSTEMS MANAGEMENT TOOLS
+yay -S btrfs-progs
+
 
 
