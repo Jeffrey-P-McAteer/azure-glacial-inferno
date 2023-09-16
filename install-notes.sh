@@ -139,6 +139,8 @@ yay -Sy nvidia cuda opencl-nvidia
 yay -Sy ocl-icd
 yay -Sy intel-ucode
 
+yay -Sy xfsprogs # for xfs disks
+
 yay -Sy openssh nginx-mainline
 sudo systemctl enable sshd.service
 sudo systemctl enable nginx.service
