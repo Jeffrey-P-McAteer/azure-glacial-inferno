@@ -203,7 +203,8 @@ async def main():
           break
 
         except:
-          traceback.print_exc()
+          if not 'timeout' in traceback.format_exc().lower():
+            traceback.print_exc()
     else:
       print(f'WARNING: not booting using IPMI because the environment variable IPMI_PASSWORD is not defined.')
       time.sleep(0.5)
