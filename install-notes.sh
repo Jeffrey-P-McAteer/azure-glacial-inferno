@@ -140,6 +140,7 @@ yay -Sy ocl-icd
 yay -Sy intel-ucode
 
 yay -Sy xfsprogs # for xfs disks
+yay -Sy ntfsprogs # for ntfs disks
 
 yay -Sy openssh nginx-mainline
 sudo systemctl enable sshd.service
