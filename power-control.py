@@ -8,13 +8,16 @@ import asyncio
 import traceback
 import shutil
 
+pipenv_dir = '/opt/power-control-pipenv'
+os.makedirs(pipenv_dir, exist_ok=True)
+sys.path.append(pipenv_dir)
 
 try:
   import kasa
 except:
   traceback.print_exc()
   subprocess.run([
-    sys.executable, '-m', 'pip', 'install', '--user', 'python-kasa'
+    sys.executable, '-m', 'pip', 'install', f'--target={pipenv_dir}', 'python-kasa'
   ])
   import kasa
 
@@ -24,7 +27,7 @@ try:
 except:
   traceback.print_exc()
   subprocess.run([
-    sys.executable, '-m', 'pip', 'install', '--user', 'python-ipmi'
+    sys.executable, '-m', 'pip', 'install', f'--target={pipenv_dir}', 'python-ipmi'
   ])
   import pyipmi
 
