@@ -9,6 +9,10 @@ import traceback
 import shutil
 
 pipenv_dir = '/opt/power-control-pipenv'
+
+if 'SWAYSOCK' in os.environ: # This is my laptop, do not have root all the time!
+  pipenv_dir = '/tmp/power-control-pipenv'
+
 os.makedirs(pipenv_dir, exist_ok=True)
 sys.path.append(pipenv_dir)
 
@@ -137,7 +141,7 @@ async def main():
         ipmi.chassis_control_soft_shutdown()
       except:
         traceback.print_exc()
-      
+
       # Poll for 40s for power down...
       for _ in range(0, 10):
         time.sleep(4)
@@ -164,13 +168,13 @@ async def main():
         ipmi.chassis_control_power_down()
       except:
         traceback.print_exc()
-      
+
       time.sleep(2)
 
     else:
       print(f'WARNING: cannot ask BMC over IPMI to power off nicely because the environment variable IPMI_PASSWORD is not defined.')
       time.sleep(0.5)
-    
+
     print('Turning server power sockets off...')
     for plug in p.children:
       if 'AGI' in plug.alias:
@@ -202,7 +206,7 @@ async def main():
           print(f'chassis_status.power_on = {chassis_status.power_on}')
 
           ipmi.chassis_control_power_up()
-          
+
           break
 
         except:
