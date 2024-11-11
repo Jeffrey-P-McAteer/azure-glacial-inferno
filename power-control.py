@@ -65,6 +65,11 @@ def ip_from_mac(mac_addr):
   print(f'Scanning {our_subnet} for {mac_addr}')
 
   # Spawn fping
+  if not shutil.which('fping'):
+    subprocess.run([
+      'yay', '-S', 'fping'
+    ])
+
   fping_proc = subprocess.Popen([
     'fping', '-c1', '-t250', '-q', '-g', our_subnet
   ], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
