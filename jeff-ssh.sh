@@ -18,9 +18,15 @@ echo "HOST=$HOST"
 
 echo "Forwarding 127.0.0.1:9000"
 
-exec ssh \
-  -i /j/ident/azure_glacial_inferno_jeffrey \
-  -L 127.0.0.1:9000:127.0.0.1:9000 \
-   jeffrey@$HOST
-
-
+if ! command -v waypipe 2>&1 >/dev/null ; then
+  echo "waypipe not found, running SSH directly"
+  exec ssh \
+    -i /j/ident/azure_glacial_inferno_jeffrey \
+    -L 127.0.0.1:9000:127.0.0.1:9000 \
+     jeffrey@$HOST
+else
+  exec waypipe ssh \
+    -i /j/ident/azure_glacial_inferno_jeffrey \
+    -L 127.0.0.1:9000:127.0.0.1:9000 \
+     jeffrey@$HOST
+fi
